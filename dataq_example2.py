@@ -40,14 +40,29 @@ X_train.loc[:,'환불금액'] = X_train.loc[:,'환불금액'].fillna(0)
 X_test.iloc[:,2] = X_test.iloc[:,2].fillna(0)
 
 
-# 모델 학습 및 예측
+# 모델 학습
+#============  1. Logistic Regression =============
 from sklearn.linear_model import LogisticRegression
 model = LogisticRegression()
 model.fit(X_train, y_train)
 print(f'Logistic Regression Accuracy: {model.score(X_train, y_train)}')
 
+#============  2. Neural Network  ==============
+from sklearn.neural_network import MLPClassifier
+model = MLPClassifier()
+model.fit(X_train, y_train)
+print(f'MLP Accuracy: {model.score(X_train, y_train)}\n')
+
+#============  3. RandomForest  ================
+from sklearn.ensemble import RandomForestClassifier
+model = RandomForestClassifier(n_estimator=20, max_depth=3, max_samples=0.1, random_state=999)
+model.fit(X_train, y_train)
+print(f'RandomForest Accuracy: {model.score(X_train, y_train)}')
+
+
+# 테스트 데이터 예측
 pred = model.predict_proba(X_test) # (2482, 2) 
-pred = pred[:,1]
+pred = pred[:,1]  # 남자일 확률
 
 
 # 답안 제출
